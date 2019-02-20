@@ -16,7 +16,7 @@ Columns contained in the dataset:
 (11)type			// data type of the identifier
 (12)enclosingClass		// names of its enclosing class
 (13)assignment			// identifiers at the other side of assignment
-(14)methodInvocated		// names of invoated method
+(14)methodInvocated		// names of invocated method
 (15)parameterArgumnt	        // names of corresponding parameters
 (16)parameter			// parameter names of a method
 (17)enclosingMethod		// names of the enclosing method
