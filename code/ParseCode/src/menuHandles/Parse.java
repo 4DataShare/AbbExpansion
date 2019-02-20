@@ -1,8 +1,6 @@
 package menuHandles;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.PrintStream;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -22,16 +20,11 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 
 import expansion.AllExpansions;
 import util.Config;
-import util.Util;
 import visitor.AssignVistor;
 import visitor.ClassVisitor;
 import visitor.CommentVisitor;
-import visitor.FileVistor;
 import visitor.MethodDeclarationVisitor;
 import visitor.MethodInvocationVisitor;
-import visitor.MethodVisitor;
-import visitor.NameVistor;
-import visitor.SimpleVisitor;
 
 /**
  * Our sample handler extends AbstractHandler, an IHandler base class.
@@ -97,25 +90,20 @@ public class Parse extends AbstractHandler {
 							astParser.setSource(compilationUnit);  
 							CompilationUnit unit = (CompilationUnit) (astParser.createAST(null));
 
-							Config.outFile = "/Users/huyamin/idToName.csv";
-							unit.accept(new NameVistor());
-							Config.outFile = "/Users/huyamin/fileToId.csv";
-							unit.accept(new FileVistor());
-							Config.outFile = "/Users/huyamin/methodIdtoId.csv";
-							unit.accept(new MethodVisitor());
-//							HandleOneFile resultOfOneFile = new HandleOneFile();
-//							unit.accept(new ClassVisitor(unit, resultOfOneFile));
 							
-//							unit.accept(new MethodDeclarationVisitor(unit, resultOfOneFile));
-//							unit.accept(new MethodInvocationVisitor(unit, resultOfOneFile));
-//							unit.accept(new AssignVistor(unit, resultOfOneFile));
-//							// comment
-//							for (Object object: unit.getCommentList()) {
-//								Comment comment = (Comment) object;
-//								String[] temp = compilationUnit.getSource().split("\n");
-//								comment.accept(new CommentVisitor(unit, temp, resultOfOneFile));
-//							}
-//							resultOfOneFile.parse();
+							HandleOneFile resultOfOneFile = new HandleOneFile();
+							unit.accept(new ClassVisitor(unit, resultOfOneFile));
+							
+							unit.accept(new MethodDeclarationVisitor(unit, resultOfOneFile));
+							unit.accept(new MethodInvocationVisitor(unit, resultOfOneFile));
+							unit.accept(new AssignVistor(unit, resultOfOneFile));
+							// comment
+							for (Object object: unit.getCommentList()) {
+								Comment comment = (Comment) object;
+								String[] temp = compilationUnit.getSource().split("\n");
+								comment.accept(new CommentVisitor(unit, temp, resultOfOneFile));
+							}
+							resultOfOneFile.parse();
 						}
 					}
 				} catch (Exception e) {
@@ -123,7 +111,7 @@ public class Parse extends AbstractHandler {
 				}
 			}
 		}
-//		AllExpansions.postprocess();
+		AllExpansions.postprocess();
 		System.err.println("END");
 	}
 }
