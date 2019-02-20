@@ -1,3 +1,6 @@
-This repository is used to disclose data 
-|---/data: the dataset of manual expansion of sampled abbreviations
-|---/code: the source code of the proposed approach
+
+It is composed of two folders: data and code.
+
+/data: abbreviations and their full expansions. 
+
+/code: the source code of the proposed approach
